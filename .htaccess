@@ -1,0 +1,258 @@
+# protéger le fichier db.php
+<files config.php>
+order allow,deny
+deny from all
+</files>
+
+
+#rediriger vers page de connexion
+DirectoryIndex login.php
+
+#protéger les dossiers
+Options -Indexes
+
+RewriteEngine On
+
+# Pour les actions POST sur controller.php
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api$ controller.php [QSA,L]
+RewriteRule ^page-connexion$ login.php [L]
+RewriteRule ^logout$ deconnexion.php [L]
+RewriteRule ^nonAccessPage$ personnel/nonAccessPage.php [L]
+
+# Pour les actions GET sur controller.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/([a-zA-Z0-9_]+)$ controller.php?action=$1 [QSA,L]
+
+
+
+# Pour les actions GET avec un paramètre id
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/([a-zA-Z0-9_]+)/([0-9]+)$ controller.php?action=$1&id=$2 [QSA,L]
+
+RewriteRule ^api/(.*)/(.*)/(.*)$ controller.php?action=$1&id=$2&password=$3 [QSA,L]
+
+# Règle pour change_etat_compte
+RewriteRule ^compte/([0-9]+)/etat/([01])$ controller.php?action=change_etat_compte&id_utilisateur=$1&access=$2 [L,QSA,NC]
+
+# Règle pour addTacheQualification (version POST recommandée)
+RewriteRule ^taches/qualifications$ controller.php?action=addTacheQualification [L,QSA]
+# Règle pour delete 
+RewriteRule ^api/taches-utilisateurs/([0-9]+)$ controller.php?action=delete&id_tache_utilisateur=$1 [L,QSA]
+# Pour les actions GET avec un paramètre id_tache
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/([a-zA-Z0-9_]+)/tache/([0-9]+)$ controller.php?action=$1&id_tache=$2 [QSA,L]
+
+# Pour les actions GET avec un paramètre id_agent
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/([a-zA-Z0-9_]+)/agent/([0-9]+)$ controller.php?action=$1&id_agent=$2 [QSA,L]
+
+# Pour utilisateur.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^user/([a-zA-Z0-9_]+)$ utilisateur.php?action=$1 [QSA,L]
+RewriteRule ^user/$ utilisateur.php [QSA,L]
+
+# Pour utilisateur.php avec un paramètre matricule
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^user/(.*)/(.*)$ utilisateur.php?action=$1&matricule=$2 [QSA,L]
+        # Admin
+# Pour structure/uniteAdministrativeNiv1.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^uniteAdministrative$ structure/uniteAdministrativeNiv1.php [QSA,L]
+RewriteRule ^uniteAdministrativeJs$ structure/uniteAdministrativeNiv1.js [QSA,L]
+
+RewriteRule ^adminHome$ acceuilAdmin.php [QSA,L]
+RewriteRule ^general$ admin.php [QSA,L]
+RewriteRule ^tache$ gestionTache.php [QSA,L]
+RewriteRule ^sousMenu$ gestionSousMenu.php [QSA,L]
+RewriteRule ^tacheQualification$ gestionTacheQualification.php [QSA,L]
+
+# Taches par défaut
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^TacheParDefaut$ defaultTache/adminDefault.php [QSA,L]
+RewriteRule ^TacheParDefautJs$ defaultTache/script.js [QSA,L]
+
+        # Personnel
+#-------------------------------#
+# Pour les actions GET ou POST sur personnelController.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^apiPersonnel$ personnel/personnelController.php [QSA,L]
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)$ personnel/personnelController.php?action=$1 [QSA,L]
+RewriteRule ^personnelJs$ personnel/personnelScript.js [QSA,L]
+RewriteRule ^home$ personnel/acceuilPersonnel.php [QSA,L]
+
+# Gestion des taches
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestion-taches$ personnel/gestionTache.php [QSA,L]
+
+# Pour les actions GET ou POST avec paramètres additionnels (ex: id, idUniteAdministrative, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)$ personnel/personnelController.php?action=$1&id=$2 [QSA,L]
+# Récupération des infos d'un agent
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)/user/([a-zA-Z0-9_]+)$ personnel/personnelController.php?action=$1&matricule=$2 [QSA,L]
+
+#Affectation de tache
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)/gestionTache/([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)$ personnel/personnelController.php?action=$1&idUniteAdministrative=$2&idUtilisateur=$3 [QSA,L]
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)/taches/([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)$ personnel/personnelController.php?action=$1&idUniteAdministrative=$2&niveauUniteAdministrative=$3 [QSA,L]
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)/tache/([a-zA-Z0-9_]+)/user/([a-zA-Z0-9_]+)/qualif/([a-zA-Z0-9_])$ personnel/personnelController.php?action=$1&id_tache=$2&id_utilisateur=$3&qualification=$4 [QSA,L]
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)/assosiate/([a-zA-Z0-9_])/([a-zA-Z0-9_])$ personnel/personnelController.php?action=$1&idTache=$2&idUtilisateur=$3 [QSA,L]
+# Menu
+RewriteRule ^apiPersonnel/([a-zA-Z0-9_]+)/sidebar/([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)$ personnel/personnelController.php?action=$1&idUniteAdministrativeNiv=$2&responsabilite=$3&niveauUniteAdministrative=$4 [QSA,L]
+
+        # Structure
+#----------------------------#
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^structure/([a-zA-Z0-9_]+)/([a-zA-Z0-9_]+)$ personnel/personnelController.php?action=$1&idUniteAdministrativeNiv=$2 [QSA,L]
+
+# Pour update_compte (../controller.php)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^apiPompte/update$ controller.php?action=update_compte [QSA,L]
+
+# Pour charger dynamiquement une ressource (url fournie par le backend)
+# (Pas de réécriture nécessaire si ce sont des fichiers statiques ou déjà propres)
+
+# Pour les assets (css, js, images, etc.), ne pas réécrire
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^.*$ - [L]
+
+
+        # Gestion Compte
+#-----------------------------------#
+
+# Créeation de compte
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^creation-compte-personnel$ validationCompte/validationCompte.php [QSA,L]
+RewriteRule ^creation-compte-js$ validationCompte/inscription.js [QSA,L]
+RewriteRule ^creation-compte-personnel-admin$ inscription/inscription.html [QSA,L]
+RewriteRule ^creation-compte-personnel-adminJs$ inscription/inscription.js [QSA,L]
+
+# Pour les actions sur inscription.php (ex: verification, editPassword, getEmailByMatricule)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestionCompte/inscription/([a-zA-Z0-9_]+)$ inscription/inscription.php?action=$1 [QSA,L]
+
+# Réinitialisation du mot de passe
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^resetPassword$ reinitialiserMotPass/reinitialisation.php [QSA,L]
+RewriteRule ^resetPasswordJs$ reinitialiserMotPass/reinisialisation.js [QSA,L]
+RewriteRule ^editPassword$ reinitialiserMotPass/editPassword.php [QSA,L]
+
+# Pour les actions sur inscription.php avec un paramètre (ex: matricule)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestionCompte/inscription/([a-zA-Z0-9_]+)/([a-zA-Z0-9_@.]+)$ inscription/inscription.php?action=$1&matricule=$2 [QSA,L]
+RewriteRule ^gestionCompte/inscription/([a-zA-Z0-9_]+)/([a-zA-Z0-9_@.]+)/(.*)$ inscription/inscription.php?action=$1&matricule=$2&password=$3 [QSA,L]
+RewriteRule ^gestionCompte/([a-zA-Z0-9_]+)/([a-zA-Z0-9_@.]+)/([a-zA-Z0-9_@.]+)$ inscription/inscription.php?action=$1&matricule=$2&email=$3 [QSA,L]
+
+# Pour les actions sur PHPSendMail/conctact.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestionCompte/sendmail$ PHPSendMail/conctact.php [QSA,L]
+
+# Pour les actions sur user/get_user.php avec un paramètre (matricule)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestionCompte/user/get_user/([a-zA-Z0-9_]+)$ user/get_user.php?matricule=$1 [QSA,L]
+
+# Pour la connexion
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestionCompte/connexion$ connexion.php [QSA,L]
+
+# Pour validationCompte/validation.php avec token et message
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^redirection$ validationCompte/validation.php? [QSA,L]
+RewriteRule ^page-validation$ validationCompte/validation.php [QSA,L]
+
+
+# Pour validationCompte/envoieMailValidation.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^validation/envoieMail$ validationCompte/envoieMailValidation.php [QSA,L]
+
+# Connexion
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestionCompte/connexion/([a-zA-Z0-9_]+)/([a-zA-Z0-9_@.]+)/(.*)$ connexion.php?action=$1&email=$2&password=$3 [QSA,L]
+
+        # Creation de compte
+#-------------------------------------#
+
+# Pour les actions GET/POST sur inscription.php (ex: verification, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^createAcocunt$ inscription/inscription.php [QSA,L]
+
+# Pour les actions GET/POST sur inscription.php avec paramètres (matricule, email, etc.)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/inscription/([a-zA-Z0-9_]+)/([a-zA-Z0-9_@.]+)$ inscription/inscription.php?action=$1&matricule=$2 [QSA,L]
+
+# Pour PHPSendMail/conctact.php (envoi d'email)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/sendmail$ PHPSendMail/conctact.php [QSA,L]
+
+# Pour controller.php (création de compte)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/compte$ controller.php [QSA,L]
+
+# Pour validationCompte/validation.php (validation par token)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^page-validation/([a-zA-Z0-9=|]+)$ validationCompte/validation.php?token=$1 [QSA,L]
+
+# Pour validationCompte/envoieMailValidation.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^validation/envoieMail$ validationCompte/envoieMailValidation.php [QSA,L]
+
+
+        # Pedagogie
+#---------------------------------#
+# Maquette
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^gestion-maquette$ pedagogie/maquette/createMaquette.php [QSA,L]
+RewriteRule ^exportation-maquette$ pedagogie/maquette/exportationMaquette.php [QSA,L]
+RewriteRule ^exportationMaquetteJs$ pedagogie/maquette/exportationMaquette.js [QSA,L]
+RewriteRule ^enseignementController$ pedagogie/maquette/enseignementController.php [QSA,L]
+RewriteRule ^maquetteJs$ pedagogie/maquette/script.js [QSA,L]
+RewriteRule ^maquetteCss$ pedagogie/maquette/style.css [QSA,L]
+RewriteRule ^maquetteController$ pedagogie/maquette/controller.php [QSA,L]
+
+#Enseignement
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^enseignement$ pedagogie/enseignement/enseignement.php [QSA,L]
+RewriteRule ^enseignementJS$ pedagogie/enseignement/script.js [QSA,L]
+RewriteRule ^enseignementController$ pedagogie/enseignement/controller.php [QSA,L]
+
+        # Admission 
+#---------------------------------#
+RewriteRule ^scripts.bundle.53.js$ admission/js/statsDemande.js [QSA,L]
+RewriteRule ^sg-acceuil$ admission/home.php [QSA,L]
+RewriteRule ^sg-stats-controller$ admission/controllers/statsController.php [QSA,L]

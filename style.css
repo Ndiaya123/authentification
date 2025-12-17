@@ -1,0 +1,46 @@
+/* style.css */
+/* Appliquer les mêmes effets aux divs de classe 'tache' */
+.tache {
+    padding: 10px;
+    /* border: 1px solid #40ce6f; */
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+ul {
+    width: max-content;
+    /* border: 1px solid #40ce6f; */
+    border-radius: 8px;
+    list-style-type: none;
+    padding: 0;
+    /* background-color: rgb(66, 124, 66); */
+
+}
+ul li {
+    cursor: pointer;
+    padding: 5px;
+    font-size: larger;
+    /* margin: 5px 0; */
+    border-radius: 5px;
+}
+ul li:hover {
+    background-color: #f2f7f1;
+    /* color: black; */
+}
+ul li.active {
+    margin: 5px;
+    background-color: #3ba13e;
+    /* color: rgb(55, 102, 71); */
+}
+
+  #icon{
+    font-size: 2rem;
+  }
+#btn{
+    padding-top: 100px;
+}
+
+.scrollable-dropdown {
+    max-height: 200px; /* Limite la hauteur maximale */
+    overflow-y: auto; /* Ajoute un défilement vertical si nécessaire */
+}
+

@@ -1,0 +1,177 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+    background-image: url('./dist_assets/images/im2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* background: linear-gradient(180deg, #fffffe 0%, #0c3b03 90%); */
+}
+.login-card{
+    max-width: 500px;
+    height: auto;
+    margin: 20px auto;
+    padding: 2rem 2.5rem;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(25, 110, 14, 0.596);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    animation: fadeInDown 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    input[type="email"],
+    input[type="password"] {
+        padding: 0.75rem 1rem;
+        width: 300px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 1.2rem;
+        transition: border-color 0.2s, box-shadow 0.3s;
+        &:focus {
+            border-color: #138613;
+            outline: none;
+            box-shadow: 0 0 0 20px rgba(38, 119, 13, 0.87);
+            animation: inputFocus 0.3s;
+        }
+    }
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            transform: translateY(-40px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        animation: fadeIn 1.2s 0.2s both;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    
+    
+    @keyframes inputFocus {
+        from {
+            box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.15);
+        }
+        to {
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.15);
+        }
+    }
+    
+    /* button {
+        padding: 0.75rem 1rem;
+        width: 200px;
+        color: #022009;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        transition: background 0.2s, transform 0.15s;
+    background: linear-gradient(180deg, #a9ecbf 0%, #1a8a2d 100%);
+        &:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 30px rgba(11, 121, 29, 0.795);
+        }
+        &:active {
+            transform: scale(0.98);
+        }
+    } */
+    
+    h4 {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+        /* margin-bottom: 0.5rem; */
+        animation: fadeIn 1s 0.1s both;
+    }
+    h5{
+        color: #5a5f5d;
+    }
+    
+    .error-message {
+        color: #d32f2f;
+        background: #ffebee;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+        text-align: center;
+        animation: shake 0.4s;
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        20% { transform: translateX(-8px); }
+        40% { transform: translateX(8px); }
+        60% { transform: translateX(-6px); }
+        80% { transform: translateX(6px); }
+        100% { transform: translateX(0); }
+    }
+    
+}
+
+/* Ajoute ce style dans ton fichier login.css ou dans un <style> dans le <head> */
+
+.login-social {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 0;
+  margin: 10px 0 0 0;
+  list-style: none;
+}
+
+.login-social li {
+  display: inline-block;
+}
+
+.login-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f3f6fa;
+  color: #222;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  border: 1px solid #e0e0e0;
+}
+
+.login-social a:hover {
+  background: #0077b5; /* LinkedIn par défaut */
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+.login-social a[href*="facebook"]      { background: #f3f6fa; color: #4267B2; }
+.login-social a[href*="facebook"]:hover { background: #4267B2; color: #fff; }
+
+.login-social a[href*="twitter"]      { background: #f3f6fa; color: #1DA1F2; }
+.login-social a[href*="twitter"]:hover { background: #1DA1F2; color: #fff; }
+
+.login-social a[href*="linkedin"]      { background: #f3f6fa; color: #0077b5; }
+.login-social a[href*="linkedin"]:hover { background: #0077b5; color: #fff; }
+
+.login-social a[href*="instagram"]      { background: #f3f6fa; color: #E1306C; }
+.login-social a[href*="instagram"]:hover { background: #e13091; color: #fff; }
+
+.login-social i {
+  font-size: 1.7rem;
+  line-height: 1;
+}
